@@ -1,24 +1,27 @@
+let computerScore = 0;
+let playerScore = 0;
+
 function getComputerChoice() {
     let index = Math.floor(Math.random() * 3) + 1;
     return index == 1 ? 'rock' : index == 2 ? 'paper' : 'scissors';
 }
 
+
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
     if (playerSelection === computerSelection) {
-        return 0;
-        //`Tie!`;
+        document.querySelector('#roundresult').textContent = `Tie!`;
     }
-    if (playerSelection === 'rock' && computerSelection === 'scissors' || 
+    else if (playerSelection === 'rock' && computerSelection === 'scissors' || 
         playerSelection === 'scissors' && computerSelection === 'paper' ||
         playerSelection ==='paper' && computerSelection === 'rock') {
-            return 1;
-            //`You win! ${playerSelection} beats ${computerSelection}`;
+            playerScore++;
+            document.querySelector('#roundresult').textContent = `You win this round! ${playerSelection} beats ${computerSelection}`;
         }
     else {
-        return -1;
-        //`You lose! ${computerSelection} beats ${playerSelection}`;
+        computerScore++;
+        document.querySelector('#roundresult').textContent = `Computer wins this round! ${computerSelection} beats ${playerSelection}`;
     }
 }
 
@@ -50,3 +53,18 @@ function game() {
         console.log('Computer wins!');
     }
 }
+
+const rockButton = document.querySelector('#rock');
+rockButton.addEventListener('click', () => {
+    if (playerScore === 5) {
+        alert('You win. Game finished. Refresh the page to play again!');
+    }
+    else if (computerScore === 5) {
+        alert('Computer wins. Game finished. Refresh the page to play again!');
+    }
+    else {
+        playRound('rock', getComputerChoice());
+        document.querySelector("#playerscore").textContent = `Your score ${playerScore}`;
+        document.querySelector("#computerscore").textContent = `Computer score ${computerScore}`;
+    }
+});
